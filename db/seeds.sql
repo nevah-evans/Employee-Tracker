@@ -1,38 +1,38 @@
-INSERT INTO departments (id, name) VALUES
-(101, 'Engineering'),
-(102, 'Finance'),
-(103, 'Legal'),
-(104, 'Sales');
+INSERT INTO departments (name) VALUES
+('Engineering'),
+('Finance'),
+('Legal'),
+('Sales');
 
-INSERT INTO roles (id, title, salary, department) VALUES 
-(201, 'Sales Lead', 40000, 104),
-(202, 'Salesperson', 35000, 104),
-(203, 'Lead Engineer', 200000, 101),
-(204, 'Software Engineer',100000, 101),
-(205, 'Account Manager', 70000, 102), 
-(206, 'Accountant', 80000, 102),
-(207, 'Legal Team Lead', 90000, 103),
-(208, 'Lawyer', 150000, 102),
-(209, 'Customer Service', 45000, 104);
+INSERT INTO roles (title, salary, department) VALUES 
+('Sales Lead', 40000, 4),
+('Salesperson', 35000, 4),
+('Lead Engineer', 200000, 1),
+('Software Engineer',100000, 1),
+('Account Manager', 70000, 2), 
+('Accountant', 80000, 2),
+('Legal Team Lead', 90000, 3),
+('Lawyer', 150000, 2),
+('Customer Service', 45000, 4);
 
-INSERT INTO employees (id, first_name, last_name, role_id, manager_id) VALUES 
-(301, 'Yuga', 'Aoyama', 209, 301),
-(302, 'Mina', 'Ashido', 209, 302),
-(303, 'Tsuyu', 'Asui', 208, 303),
-(304, 'Tenya', 'Ida', 208, 304),
-(305, 'Ochaco', 'Uraraka', 207, 305),
-(306, 'Mashirao', 'Ojiro', 207, 306),
-(307, 'Denki', 'Kaminari', 206, 307),
-(308, 'Eijiro', 'Kirishima', 206, 308),
-(309, 'Koji', 'Koda', 205, 309),
-(310, 'Rikido', 'Sato', 205, 310),
-(311, 'Mezo', 'Shoji', 204, 311),
-(312, 'Kyoka', 'Jiro', 204, 312),
-(313, 'Hanta', 'Sero', 203, 313),
-(314, 'Fumikage', 'Tokoyami', 203, 314),
-(315, 'Shoto', 'Todoroki', 202, 315),
-(316, 'Toru', 'Hagakure', 202, 316),
-(317, 'Katsuki', 'Bakugo', 201, 317),
-(318, 'Izuku', 'Midoriya', 201, 318),
-(319, 'Minoru', 'Mineta', 209, 319),
-(320, 'Momo', 'Yaoyorozu', 209, 320);
+INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES 
+('Yuga', 'Aoyama', 9, 1),
+('Mina', 'Ashido', 9, 2),
+('Tsuyu', 'Asui', 8, 3),
+('Tenya', 'Ida', 8, 4),
+('Ochaco', 'Uraraka', 7, 5),
+('Mashirao', 'Ojiro', 7, 6),
+('Denki', 'Kaminari', 6, 7),
+('Eijiro', 'Kirishima', 6, 8),
+('Koji', 'Koda', 5, 9),
+('Rikido', 'Sato', 5, 10),
+('Mezo', 'Shoji', 4, 11),
+('Kyoka', 'Jiro', 4, 12),
+('Hanta', 'Sero', 3, 13),
+('Fumikage', 'Tokoyami', 3, 14),
+('Shoto', 'Todoroki', 2, 15),
+('Toru', 'Hagakure', 2, 16),
+('Katsuki', 'Bakugo', 1, 17),
+('Izuku', 'Midoriya', 1, 18),
+('Minoru', 'Mineta', 9, 19),
+('Momo', 'Yaoyorozu', 9, 20);

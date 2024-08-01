@@ -4,7 +4,6 @@ CREATE DATABASE employees_db;
 
 \c employees_db;
 
--- SELECT employees_db;
 
 CREATE TABLE departments (
     id SERIAL PRIMARY KEY,
