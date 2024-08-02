@@ -132,28 +132,28 @@ function addRole() {
 
 function addEmployee() {
   const jobQuery = "SELECT id, title FROM roles";
-  const managerQuery = `SELECT id, CONCAT(employees.first_name, ' ', employees.last_name) AS employees FROM employees`;
+  const managerQuery = `SELECT id, CONCAT(employees.first_name, ' ', employees.last_name) AS managers FROM employees`;
 
-  pool
-    .query(jobQuery, (err, res) => {
-      if (err) {
-        console.error("Error executing query", err);
-      } else {
-        const jobs = res.rows.map(({ id, title }) => ({
-          name: title,
-          value: id,
-        }));
+  pool.query(jobQuery, (err, res) => {
+    if (err) {
+      console.error("Error executing query", err);
+    } else {
+      const jobs = res.rows.map(({ id, title }) => ({
+        name: title,
+        value: id,
+      }));
 
-        pool.query(managerQuery, (err, res) => {
-          if (err) {
-            console.error("Error executing query", err);
-          } else {
-            const managers = res.rows.map(({ id, manager }) => ({
-              name: manager,
-              value: id,
-            }));
+      pool.query(managerQuery, (err, res) => {
+        if (err) {
+          console.error("Error executing query", err);
+        } else {
+          const managers = res.rows.map(({ id, manager }) => ({
+            name: manager,
+            value: id,
+          }));
 
-            inquirer.prompt([
+          inquirer
+            .prompt([
               {
                 type: "input",
                 name: "firstName",
@@ -178,59 +178,82 @@ function addEmployee() {
               },
             ])
             .then((answer) => {
-      const query =
-        "INSERT INTO employees(first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)";
-      pool.query(
-        query,
-        [answer.firstName, answer.lastName, answer.job, answer.manager],
-        (err, res) => {
-          if (err) {
-            console.error("Error executing query", err);
-          } else {
-            console.log(`Added ${answer.firstName} to the database`);
-            startInquirer();
-          }
+              const query =
+                "INSERT INTO employees(first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)";
+              pool.query(
+                query,
+                [answer.firstName, answer.lastName, answer.job, answer.manager],
+                (err, res) => {
+                  if (err) {
+                    console.error("Error executing query", err);
+                  } else {
+                    console.log(`Added ${answer.firstName} to the database`);
+                    startInquirer();
+                  }
+                }
+              );
+            });
         }
-      );
-    });
-  }
-});
+      });
+    }
+  });
 }
-});
-}
-// ==================================================================================================================
 
 function updateEmployee() {
-  const query = `SELECT  CONCAT(employees.first_name, ' ', employees.last_name) AS employees FROM employees`;
+  const employeeQuery = `SELECT  employees.id, CONCAT (employees.first_name, ' ' , employees.last_name) AS full_name, roles.id FROM employees LEFT JOIN roles ON employees.role_id = roles.id`;
+  pool.query(employeeQuery, (err, res) => {
+    if (err) {
+      console.error("Error executing query", err);
+    } else {
+      const employees = res.rows.map(({ full_name, id }) => ({
+        name: full_name,
+        value: id,
+      }));
 
-  inquirer
-    .prompt([
-      {
-        type: "list",
-        name: "employees",
-        message: "Which employee's role do you want to update?",
-        choices: [query],
-      },
-      {
-        type: "list",
-        name: "jobUD",
-        message: "Which department does this role belong to?",
-        choices: [
-          "Sales Lead",
-          "Salesperson",
-          "Lead Engineer",
-          "Software Engineer",
-          "Account Manager",
-          "Accountant",
-          "Legal Team Lead",
-          "Lawyer",
-          "Customer Service",
-        ],
-      },
-    ])
+      const departmentQuery = `SELECT * FROM departments`;
+      pool.query(departmentQuery, (err, res) => {
+        if (err) {
+          console.error("Error executing query", err);
+        } else {
+          const departments = res.rows.map(({ name }) => name);
 
-    .then(console.log("Updated employee's role"));
+          inquirer
+            .prompt([
+              {
+                type: "list",
+                name: "employees",
+                message: "Which employee's role do you want to update?",
+                choices: employees,
+              },
+              {
+                type: "list",
+                name: "jobUD",
+                message: "Which department does this role belong to?",
+                choices: departments,
+              },
+            ])
+
+            .then((answer) => {
+              const query = "UPDATE employees SET role_id = $1 WHERE id = $2";
+              pool.query(
+                query,
+                [answer.departmentId, answer.employeeId],
+                (err, res) => {
+                  if (err) {
+                    console.error("Error executing query", err);
+                  } else {
+                    console.log("Updated employee's role!");
+                    startInquirer();
+                  }
+                }
+              );
+            });
+        }
+      });
+    }
+  });
 }
+// ==================================================================================================================
 
 function viewAllDepartments() {
   const query = `SELECT * FROM departments;`;
