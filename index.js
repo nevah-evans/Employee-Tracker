@@ -253,7 +253,6 @@ function updateEmployee() {
     }
   });
 }
-// ==================================================================================================================
 
 function viewAllDepartments() {
   const query = `SELECT * FROM departments;`;
